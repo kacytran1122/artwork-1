@@ -1,0 +1,630 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta name="format-detection" content="telephone=no">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Happy Birthday 💌</title>
+
+  <style>
+    :root{
+      --bg1:#0f172a;
+      --bg2:#2b1b5a;
+      --paper:#fff7ea;
+      --paper2:#ffe9c7;
+      --ink:#1f2937;
+      --accent:#ff4da6;
+      --accent2:#7c3aed;
+      --shadow: rgba(0,0,0,.25);
+    }
+    /* ===== MOBILE SAFE VIEWPORT ===== */
+    html,body{
+    height:100%;
+    }
+
+    body{
+    min-height:100svh; /* modern phones */
+    min-height:100dvh; /* dynamic viewport */
+    min-height:-webkit-fill-available; /* older iOS */
+    }
+
+
+    *{box-sizing:border-box}
+    body{
+      margin:0;
+      min-height:100vh;
+      display:grid;
+      place-items:center;
+      color:#eef2ff;
+      font-family: ui-sans-serif, system-ui, -apple-system, Segoe UI, Roboto, Helvetica, Arial;
+      background:
+        radial-gradient(1200px 800px at 15% 20%, rgba(255,77,166,.22), transparent 55%),
+        radial-gradient(900px 600px at 85% 20%, rgba(124,58,237,.25), transparent 60%),
+        radial-gradient(900px 700px at 55% 85%, rgba(255,205,90,.18), transparent 60%),
+        linear-gradient(135deg, var(--bg1), var(--bg2));
+      overflow-x:hidden;
+      overflow-y:auto;
+    }
+
+    /* subtle stars */
+    .stars::before, .stars::after{
+      content:"";
+      position:fixed; inset:0;
+      background-image:
+        radial-gradient(2px 2px at 10% 20%, rgba(255,255,255,.8) 40%, transparent 42%),
+        radial-gradient(1px 1px at 35% 60%, rgba(255,255,255,.7) 40%, transparent 42%),
+        radial-gradient(2px 2px at 70% 30%, rgba(255,255,255,.75) 40%, transparent 42%),
+        radial-gradient(1px 1px at 85% 75%, rgba(255,255,255,.65) 40%, transparent 42%),
+        radial-gradient(2px 2px at 55% 10%, rgba(255,255,255,.7) 40%, transparent 42%),
+        radial-gradient(1px 1px at 20% 85%, rgba(255,255,255,.6) 40%, transparent 42%);
+      opacity:.35;
+      pointer-events:none;
+      animation: twinkle 6s ease-in-out infinite alternate;
+    }
+    .stars::after{
+      opacity:.25;
+      filter: blur(.3px);
+      animation-duration: 8s;
+    }
+    @keyframes twinkle{
+      from{ transform: translateY(0px); opacity:.25;}
+      to{ transform: translateY(-6px); opacity:.4;}
+    }
+
+    .wrap{
+      width:min(980px, 92vw);
+      display:grid;
+      gap:22px;
+      justify-items:center;
+      padding:26px 0;
+      position:relative;
+      z-index:2;
+    }
+
+    .title{
+      text-align:center;
+      line-height:1.15;
+    }
+    .title h1{
+      margin:0;
+      font-size: clamp(28px, 3.8vw, 46px);
+      letter-spacing:.2px;
+    }
+    .title p{
+      margin:10px 0 0;
+      opacity:.88;
+      font-size: clamp(14px, 1.6vw, 18px);
+    }
+
+    .stage{
+      width:min(520px, 92vw);
+      aspect-ratio: 4 / 3;
+      display:grid;
+      place-items:center;
+      position:relative;
+      perspective: 1400px;
+      -webkit-perspective: 1400px;
+
+    }
+
+
+    /* ENVELOPE */
+    .envelope{
+        width:min(420px, 88vw);
+        height:280px;
+        position:relative;
+        transform-style: preserve-3d;
+        -webkit-transform-style: preserve-3d;
+        backface-visibility:hidden;
+        -webkit-backface-visibility:hidden;
+        filter: drop-shadow(0 18px 28px var(--shadow));
+        user-select:none;
+        cursor:pointer;
+    }
+
+
+    /* envelope body */
+    .env-body{
+      position:absolute; inset:0;
+      border-radius:18px;
+      background: linear-gradient(180deg, rgba(235, 18, 188, 0.16), rgba(249, 2, 183, 0.06));
+      border: 1px solid rgba(190, 245, 39, 0.18);
+      overflow:hidden;
+      backdrop-filter: blur(6px);
+    }
+
+    /* paper inside */
+    .letter{
+      position:absolute;
+      left:50%;
+      bottom:18px;
+      transform: translateX(-50%);
+      width:86%;
+      height:120%;
+      background: linear-gradient(180deg, var(--paper), var(--paper2));
+      border-radius:14px;
+      box-shadow: 0 10px 18px rgba(239, 13, 149, 0.18);
+      border: 1px solid rgba(31,41,55,.12);
+      display:flex;
+      flex-direction:column;
+      gap:10px;
+      padding:18px 18px 16px;
+      color: var(--ink);
+      z-index:2;
+
+      /* hidden state */
+      transform-origin: bottom;
+      translate: -50% 48%;
+      opacity: 0;
+    }
+
+    .letter .meta{
+      display:flex;
+      justify-content:space-between;
+      font-size:13px;
+      opacity:.8;
+    }
+
+    .letter h2{
+      margin:4px 0 0;
+      font-size:20px;
+      letter-spacing:.2px;
+    }
+
+    .letter .msg{
+      margin:0;
+      font-size:15px;
+      line-height:1.55;
+      white-space:pre-wrap;
+      min-height: 120px;
+    }
+
+    .signature{
+      margin-top:auto;
+      display:flex;
+      justify-content:flex-end;
+      font-weight:700;
+      color:#111827;
+    }
+
+    /* triangle folds */
+    .fold{
+      position:absolute;
+      inset:0;
+      z-index:3;
+      pointer-events:none;
+    }
+
+    /* bottom fold */
+    .fold.bottom{
+      clip-path: polygon(0 100%, 50% 55%, 100% 100%, 100% 100%, 0 100%);
+      background: linear-gradient(180deg, rgba(255,255,255,.20), rgba(255,255,255,.06));
+      border-top: 1px solid rgba(255,255,255,.14);
+    }
+
+    /* left fold */
+    .fold.left{
+      clip-path: polygon(0 0, 50% 55%, 0 100%);
+      background: linear-gradient(135deg, rgba(255,255,255,.18), rgba(255,255,255,.05));
+      border-right: 1px solid rgba(255,255,255,.12);
+      opacity:.95;
+    }
+
+    /* right fold */
+    .fold.right{
+      clip-path: polygon(100% 0, 50% 55%, 100% 100%);
+      background: linear-gradient(225deg, rgba(255,255,255,.18), rgba(255,255,255,.05));
+      border-left: 1px solid rgba(255,255,255,.12);
+      opacity:.95;
+    }
+
+    /* top flap */
+    .flap{
+        position:absolute;
+        left:0; top:0;
+        width:100%; height:65%;
+        clip-path: polygon(0 0, 100% 0, 50% 80%);
+        background: linear-gradient(180deg, rgba(255,255,255,.24), rgba(255,255,255,.06));
+        transform-origin: 50% 0%;
+        transform: rotateX(0deg);
+        transform-style: preserve-3d;
+        backface-visibility:hidden;
+        -webkit-backface-visibility:hidden;
+        z-index:5;
+    }
+
+
+    /* little seal */
+    .seal{
+      position:absolute;
+      left:50%;
+      top:54%;
+      transform: translate(-50%,-50%);
+      width:56px; height:56px;
+      border-radius:999px;
+      background: radial-gradient(circle at 30% 30%, #f4fa52, var(--accent));
+      box-shadow: 0 10px 16px rgba(234, 75, 154, 0.22);
+      z-index:6;
+      display:grid;
+      place-items:center;
+      color:white;
+      font-weight:800;
+      letter-spacing:.5px;
+    }
+
+    .seal::after{
+        content:"🦫";
+        font-size:26px;
+        line-height:1;
+        }
+
+
+    /* controls */
+    .controls{
+      display:flex;
+      gap:10px;
+      flex-wrap:wrap;
+      justify-content:center;
+    }
+
+    button{
+      border:0;
+      padding:12px 16px;
+      border-radius:14px;
+      font-weight:700;
+      cursor:pointer;
+      color:#0b1220;
+      background: rgba(255,255,255,.9);
+      box-shadow: 0 12px 22px rgba(0,0,0,.18);
+      transition: transform .15s ease, box-shadow .15s ease, opacity .2s ease;
+    }
+    button:hover{ transform: translateY(-2px); box-shadow: 0 16px 26px rgba(0,0,0,.22); }
+    button:active{ transform: translateY(0px); box-shadow: 0 10px 18px rgba(0,0,0,.18); }
+
+    .btn-accent{
+      background: linear-gradient(135deg, rgba(255,77,166,.98), rgba(124,58,237,.92));
+      color:white;
+    }
+    .hint{
+      opacity:.82;
+      font-size:14px;
+      text-align:center;
+    }
+
+    /* OPEN STATE ANIMATIONS */
+    .envelope.open .flap{
+      animation: flapOpen .9s cubic-bezier(.2,.8,.2,1) forwards;
+    }
+    @keyframes flapOpen{
+      0%{ transform: rotateX(0deg); }
+      100%{ transform: rotateX(165deg); }
+    }
+
+    .envelope.open .letter{
+      animation: letterRise 1.1s cubic-bezier(.2,.85,.2,1) .18s forwards;
+    }
+    @keyframes letterRise{
+      0%{ translate: -50% 48%; opacity:0; }
+      60%{ translate: -50% 4%; opacity:1; }
+      100%{ translate: -50% 0%; opacity:1; }
+    }
+
+    .envelope.open .seal{
+      animation: sealPop .5s ease .05s forwards;
+    }
+    @keyframes sealPop{
+      to{ transform: translate(-50%,-50%) scale(.85); opacity:.85; }
+    }
+
+    /* typewriter caret */
+    .caret{
+      display:inline-block;
+      width:10px;
+      translate: 0 2px;
+      animation: blink 1s steps(2, end) infinite;
+      color: var(--accent2);
+      font-weight:900;
+    }
+    @keyframes blink{ 50%{opacity:0;} }
+
+    /* confetti */
+    canvas#confetti{
+      position:fixed; inset:0;
+      pointer-events:none;
+      z-index:1;
+    }
+
+    /* small footer */
+    .footer{
+      opacity:.7;
+      font-size:12px;
+      text-align:center;
+    }
+    .footer span{
+      padding:6px 10px;
+      border-radius:999px;
+      background: rgba(255,255,255,.08);
+      border:1px solid rgba(255,255,255,.12);
+    }
+
+    @media (prefers-reduced-motion: reduce){
+    *{ animation:none !important; transition:none !important; }
+    .letter{ opacity:1; translate:-50% 0%; }
+    .flap{ transform: rotateX(165deg); }
+        /* ===== MOBILE PERFORMANCE MODE ===== */
+    @media (max-width: 600px){
+    .stars::before,.stars::after{
+        animation:none;
+        opacity:.25;
+    }
+
+    .seal{ box-shadow:none; }
+    .envelope{ filter:none; }
+}
+
+    @media (max-width:480px){
+
+        body{
+            display:block;
+            padding-top:40px;
+        }
+
+        .wrap{
+            width:100%;
+        padding:20px 12px 40px;
+    }
+
+    .stage{
+        width:100%;
+        aspect-ratio:auto;
+        height:360px;
+    }
+
+    .envelope{
+        width:92vw;
+        height:240px;
+    }
+
+    .letter{
+        width:92%;
+        font-size:14px;
+        padding:14px;
+    }
+
+    .title h1{ font-size:26px }
+    }
+
+    /* ===== PHONE LAYOUT TUNING ===== */
+        @media (max-width:480px){
+        .stage{ aspect-ratio: 3 / 4; }
+
+        .letter{
+            padding:14px;
+            font-size:14px;
+        }
+
+        .title h1{ font-size:26px }
+    }
+
+        }
+  </style>
+</head>
+
+<body>
+  <div class="stars"></div>
+  <canvas id="confetti"></canvas>
+
+  <div class="wrap">
+    <div class="title">
+      <h1>💌 A birthday envelope just for you (test version)</h1>
+      <p>Click <b>Open</b> to reveal the message.</p>
+    </div>
+
+    <div class="stage">
+      <div class="envelope" id="envelope" aria-label="Envelope">
+        <div class="env-body"></div>
+
+        <div class="letter" id="letter" aria-label="Letter">
+          <div class="meta">
+            <div id="toLine">To: —</div>
+            <div id="dateLine">—</div>
+          </div>
+          <h2 id="headline">Happy Birthday!</h2>
+          <p class="msg" id="typedMsg"></p>
+          <div class="signature" id="fromLine">—</div>
+        </div>
+
+        <div class="fold left"></div>
+        <div class="fold right"></div>
+        <div class="fold bottom"></div>
+
+        <div class="flap"></div>
+        <div class="seal" title="sealed with love"></div>
+      </div>
+    </div>
+
+    <div class="controls">
+      <button class="btn-accent" id="openBtn">Open ✨</button>
+      <button id="replayBtn">Replay</button>
+    </div>
+
+    <div class="hint" id="hint">Tip: Please click open...and please ask for the permission to use this version. Thanks A LOT✍️</div>
+    <div class="footer"><span>Just for fun....</span></div>
+  </div>
+
+  <script>
+    // ====== EDIT THESE ======
+    const TO_NAME   = "iykyk";
+    const FROM_NAME = "#Kacy's artwork";
+    const MESSAGE   =
+`happy birthday 🎂
+
+Even if an entire world were made of language, I would still need my own voice to tell you how grateful I am I met you...And little did you know that honestly I don’t know how many lifetimes it took for our paths to cross, but I know this one became brighter the moment I met you... Thanks for raising me up! I'm always cheering for you, whereever you go
+`;
+
+    const HEADLINE = "Happy Birthday 🥳";
+    // ========================
+
+    const envelope = document.getElementById("envelope");
+    const openBtn  = document.getElementById("openBtn");
+    const replayBtn= document.getElementById("replayBtn");
+    const typedMsg = document.getElementById("typedMsg");
+
+    const toLine   = document.getElementById("toLine");
+    const fromLine = document.getElementById("fromLine");
+    const dateLine = document.getElementById("dateLine");
+    const headline = document.getElementById("headline");
+
+    // set header lines
+    toLine.textContent = `To: ${TO_NAME}`;
+    fromLine.textContent = `— ${FROM_NAME}`;
+    headline.textContent = HEADLINE;
+
+    const now = new Date(2026, 1, 19); // month is 0-indexed (1 = February) // month is 0-indexed (1 = February)
+
+    function ordinal(n){
+        if(n%10==1 && n%100!=11) return n+"st";
+        if(n%10==2 && n%100!=12) return n+"nd";
+        if(n%10==3 && n%100!=13) return n+"rd";
+        return n+"th";
+    }
+
+    const day = ordinal(now.getDate());
+    const month = now.toLocaleString("en-GB",{month:"long"});
+    const year = now.getFullYear();
+
+    dateLine.textContent = `${day} ${month} ${year}`;
+
+
+    let typingTimer = null;
+    let isOpen = false;
+
+    function clearTyping(){
+      if (typingTimer) cancelAnimationFrame(typingTimer);
+      typingTimer = null;
+    }
+
+    function typewriter(el, text, speed=18){
+      clearTyping();
+      el.textContent = "";
+      let i = 0;
+      let last = performance.now();
+
+      const caret = document.createElement("span");
+      caret.className = "caret";
+      caret.textContent = "▍";
+      el.appendChild(caret);
+
+      function step(t){
+        const dt = t - last;
+        if (dt >= speed){
+          last = t;
+          if (i < text.length){
+            caret.remove();
+            el.textContent += text[i];
+            el.appendChild(caret);
+            i++;
+          } else {
+            caret.remove();
+            return;
+          }
+        }
+        typingTimer = requestAnimationFrame(step);
+      }
+      typingTimer = requestAnimationFrame(step);
+    }
+
+    // ---- Confetti (tiny lightweight) ----
+    const canvas = document.getElementById("confetti");
+    const ctx = canvas.getContext("2d");
+    let W, H, confetti = [], confettiAnim = null;
+
+    function resize(){
+      W = canvas.width  = window.innerWidth;
+      H = canvas.height = window.innerHeight;
+    }
+    window.addEventListener("resize", resize);
+    resize();
+
+    function burstConfetti(count=180){
+      confetti = [];
+      for(let i=0;i<count;i++){
+        confetti.push({
+          x: W/2 + (Math.random()-0.5)*120,
+          y: H*0.30 + (Math.random()-0.5)*60,
+          vx:(Math.random()-0.5)*10,
+          vy:(Math.random()*-10)-6,
+          r: Math.random()*6 + 3,
+          a: Math.random()*Math.PI*2,
+          va:(Math.random()-0.5)*0.2,
+          g: 0.35 + Math.random()*0.18,
+          life: 220 + Math.random()*80
+        });
+      }
+      runConfetti();
+    }
+
+    function runConfetti(){
+      if (confettiAnim) cancelAnimationFrame(confettiAnim);
+      function draw(){
+        ctx.clearRect(0,0,W,H);
+        confetti.forEach(p=>{
+          p.vy += p.g;
+          p.x += p.vx;
+          p.y += p.vy;
+          p.a += p.va;
+          p.life -= 1;
+
+          ctx.save();
+          ctx.translate(p.x, p.y);
+          ctx.rotate(p.a);
+
+          // no fixed colors asked -> keep it dynamic but consistent
+          const hue = (p.x/W)*360;
+          ctx.fillStyle = `hsla(${hue}, 90%, 65%, 0.95)`;
+
+          ctx.fillRect(-p.r/2, -p.r/2, p.r, p.r*0.7);
+          ctx.restore();
+        });
+
+        confetti = confetti.filter(p => p.life > 0 && p.y < H+60);
+        if (confetti.length > 0) confettiAnim = requestAnimationFrame(draw);
+        else ctx.clearRect(0,0,W,H);
+      }
+      confettiAnim = requestAnimationFrame(draw);
+    }
+
+    function openEnvelope(){
+      if (isOpen) return;
+      isOpen = true;
+      envelope.classList.add("open");
+      typewriter(typedMsg, MESSAGE, 14);
+      burstConfetti(220);
+    }
+
+    function replay(){
+      isOpen = false;
+      envelope.classList.remove("open");
+      clearTyping();
+      typedMsg.textContent = "";
+      ctx.clearRect(0,0,W,H);
+      confetti = [];
+    }
+
+    openBtn.addEventListener("click", openEnvelope);
+    replayBtn.addEventListener("click", replay);
+
+    // also allow clicking the envelope itself
+    // universal tap support (iphone + android + desktop)
+    ["touchstart","pointerdown","click"].forEach(evt=>{
+    envelope.addEventListener(evt, openEnvelope, {passive:true});
+    openBtn.addEventListener(evt, openEnvelope, {passive:true});
+    });
+
+    replayBtn.addEventListener("click", replay);
+
+  </script>
+</body>
+</html>
