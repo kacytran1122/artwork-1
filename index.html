@@ -19,15 +19,15 @@
       --accent2:#7c3aed;
       --shadow: rgba(0,0,0,.25);
     }
-    /* ===== MOBILE SAFE VIEWPORT ===== */
+   
     html,body{
     height:100%;
     }
 
     body{
-    min-height:100svh; /* modern phones */
-    min-height:100dvh; /* dynamic viewport */
-    min-height:-webkit-fill-available; /* older iOS */
+    min-height:100svh; 
+    min-height:100dvh; 
+    min-height:-webkit-fill-available; 
     }
 
 
@@ -48,7 +48,7 @@
       overflow-y:auto;
     }
 
-    /* subtle stars */
+    
     .stars::before, .stars::after{
       content:"";
       position:fixed; inset:0;
@@ -110,7 +110,7 @@
     }
 
 
-    /* ENVELOPE */
+    
     .envelope{
         width:min(420px, 88vw);
         height:280px;
@@ -125,7 +125,7 @@
     }
 
 
-    /* envelope body */
+    
     .env-body{
       position:absolute; inset:0;
       border-radius:18px;
@@ -135,7 +135,7 @@
       backdrop-filter: blur(6px);
     }
 
-    /* paper inside */
+    
     .letter{
       position:absolute;
       left:50%;
@@ -154,7 +154,7 @@
       color: var(--ink);
       z-index:2;
 
-      /* hidden state */
+     
       transform-origin: bottom;
       translate: -50% 48%;
       opacity: 0;
@@ -189,7 +189,7 @@
       color:#111827;
     }
 
-    /* triangle folds */
+    
     .fold{
       position:absolute;
       inset:0;
@@ -197,14 +197,14 @@
       pointer-events:none;
     }
 
-    /* bottom fold */
+    
     .fold.bottom{
       clip-path: polygon(0 100%, 50% 55%, 100% 100%, 100% 100%, 0 100%);
       background: linear-gradient(180deg, rgba(255,255,255,.20), rgba(255,255,255,.06));
       border-top: 1px solid rgba(255,255,255,.14);
     }
 
-    /* left fold */
+    
     .fold.left{
       clip-path: polygon(0 0, 50% 55%, 0 100%);
       background: linear-gradient(135deg, rgba(255,255,255,.18), rgba(255,255,255,.05));
@@ -212,7 +212,7 @@
       opacity:.95;
     }
 
-    /* right fold */
+    
     .fold.right{
       clip-path: polygon(100% 0, 50% 55%, 100% 100%);
       background: linear-gradient(225deg, rgba(255,255,255,.18), rgba(255,255,255,.05));
@@ -220,7 +220,7 @@
       opacity:.95;
     }
 
-    /* top flap */
+   
     .flap{
         position:absolute;
         left:0; top:0;
@@ -236,7 +236,7 @@
     }
 
 
-    /* little seal */
+    
     .seal{
       position:absolute;
       left:50%;
@@ -261,7 +261,7 @@
         }
 
 
-    /* controls */
+    
     .controls{
       display:flex;
       gap:10px;
@@ -293,7 +293,7 @@
       text-align:center;
     }
 
-    /* OPEN STATE ANIMATIONS */
+    
     .envelope.open .flap{
       animation: flapOpen .9s cubic-bezier(.2,.8,.2,1) forwards;
     }
@@ -318,7 +318,7 @@
       to{ transform: translate(-50%,-50%) scale(.85); opacity:.85; }
     }
 
-    /* typewriter caret */
+    
     .caret{
       display:inline-block;
       width:10px;
@@ -329,14 +329,14 @@
     }
     @keyframes blink{ 50%{opacity:0;} }
 
-    /* confetti */
+   
     canvas#confetti{
       position:fixed; inset:0;
       pointer-events:none;
       z-index:1;
     }
 
-    /* small footer */
+   
     .footer{
       opacity:.7;
       font-size:12px;
@@ -353,7 +353,7 @@
     *{ animation:none !important; transition:none !important; }
     .letter{ opacity:1; translate:-50% 0%; }
     .flap{ transform: rotateX(165deg); }
-        /* ===== MOBILE PERFORMANCE MODE ===== */
+       
     @media (max-width: 600px){
     .stars::before,.stars::after{
         animation:none;
@@ -396,7 +396,7 @@
     .title h1{ font-size:26px }
     }
 
-    /* ===== PHONE LAYOUT TUNING ===== */
+    
         @media (max-width:480px){
         .stage{ aspect-ratio: 3 / 4; }
 
@@ -455,7 +455,7 @@
   </div>
 
   <script>
-    // ====== EDIT THESE ======
+    
     const TO_NAME   = "iykyk";
     const FROM_NAME = "#Kacy's artwork";
     const MESSAGE   =
@@ -465,7 +465,7 @@ Even if an entire world were made of language, I would still need my own voice t
 `;
 
     const HEADLINE = "Happy Birthday 🥳";
-    // ========================
+   
 
     const envelope = document.getElementById("envelope");
     const openBtn  = document.getElementById("openBtn");
@@ -477,12 +477,12 @@ Even if an entire world were made of language, I would still need my own voice t
     const dateLine = document.getElementById("dateLine");
     const headline = document.getElementById("headline");
 
-    // set header lines
+   
     toLine.textContent = `To: ${TO_NAME}`;
     fromLine.textContent = `— ${FROM_NAME}`;
     headline.textContent = HEADLINE;
 
-    const now = new Date(2026, 1, 19); // month is 0-indexed (1 = February) // month is 0-indexed (1 = February)
+    const now = new Date(2026, 1, 19); 
 
     function ordinal(n){
         if(n%10==1 && n%100!=11) return n+"st";
@@ -536,7 +536,7 @@ Even if an entire world were made of language, I would still need my own voice t
       typingTimer = requestAnimationFrame(step);
     }
 
-    // ---- Confetti (tiny lightweight) ----
+    
     const canvas = document.getElementById("confetti");
     const ctx = canvas.getContext("2d");
     let W, H, confetti = [], confettiAnim = null;
@@ -616,8 +616,7 @@ Even if an entire world were made of language, I would still need my own voice t
     openBtn.addEventListener("click", openEnvelope);
     replayBtn.addEventListener("click", replay);
 
-    // also allow clicking the envelope itself
-    // universal tap support (iphone + android + desktop)
+   
     ["touchstart","pointerdown","click"].forEach(evt=>{
     envelope.addEventListener(evt, openEnvelope, {passive:true});
     openBtn.addEventListener(evt, openEnvelope, {passive:true});
@@ -628,3 +627,4 @@ Even if an entire world were made of language, I would still need my own voice t
   </script>
 </body>
 </html>
+
